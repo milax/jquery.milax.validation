@@ -1,0 +1,118 @@
+/*
+
+    Project: jQuery  validation
+    Master screen styles
+
+    Author: Eugene Kuzmin / publicweb.ru
+-----------------------------------------------------------------------*/
+
+body
+{
+    margin: 0;
+    padding: 20px;
+    font: normal 12px/1.5 Arial, Verdana, Tahoma, Sans-Serif;
+    color: #000;
+    background: #fff;
+}
+
+form, fieldset, input, textarea, select, th, td
+{
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+}
+
+/* Clearings */
+.clearfix:after
+{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+
+.clear
+{
+    clear: both;
+    height: 0;
+}
+/* @end */
+
+
+/* Links */
+a
+{
+    color: #92939b;
+    text-decoration: underline;
+}
+a:hover
+{
+    color: #252737;
+}
+a:focus,
+a:active
+{
+    color: #252737;
+    text-decoration: none;
+}
+
+/* Image + image link border */
+img
+{
+    display: block;
+}
+a img
+{
+    border: 0;
+}
+:focus { outline: 0; }
+/* @end */
+
+/* @group Tables */
+/* @end */
+
+
+
+/* @group Forms */
+
+fieldset
+{
+    margin: 0;
+    padding: 0;
+    display: block;
+    border: none;
+}
+legend
+{
+    display: none;
+}
+
+ 
+/* @group Main layout */
+
+dl.formFields,
+dl.formFields dt,
+dl.formFields dd
+{
+    margin: 0;
+    padding: 0;
+}
+dl.formFields .error
+{
+    display: none;
+    color: #f00;
+    font-size: 11px;
+}
+
+#wrapper
+{
+    margin-bottom: 25px;
+}
+footer
+{
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+}

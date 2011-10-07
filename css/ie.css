@@ -1,0 +1,14 @@
+/*
+
+    Project: jQuery validation
+    IE patches
+
+    Author: Eugene Kuzmin / publicweb.ru
+-----------------------------------------------------------------------*/
+ 
+* html .clearfix { height: 1px; }
+* html body hr { margin: 1px 0; } /* Remove the progressive spacing in IE */
+
+/* For IE 6/7 (trigger hasLayout) */
+* html .clearfix { zoom: 1; } /* IE6 */
+*+html .clearfix { zoom: 1; } /* IE7 */

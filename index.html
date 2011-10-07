@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta charset="utf-8">
+   
+    <title>jQuery form validation by Eugene Kuzmin</title>
+    
+    <link rel="stylesheet" href="css/base.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="css/ie.css">
+    <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="js/base.js"></script>
+
+</head>
+<body>
+
+    <form action="/" method="post">
+
+        <section id="wrapper" role="main">
+            <h1>Form validation plugin</h1>
+            <fieldset>
+                <dl class="formFields">
+                    <dt>
+                        <label>Name: </label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="yourName" class="validatedField required">
+                        <span class="error required">This field is required</span>
+                    </dd>
+
+                    <dt>
+                        <label>Email: </label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="yourName" class="validatedField required email">
+                        <span class="error required">This field is required</span>
+                        <span class="error email">Wrong email format</span>
+                    </dd>
+                    <dd class="button">
+                        <input class="btnSubmit" type="submit" value="Send">
+                    </dd>
+                </dl>
+            </fieldset> 
+
+        </section>
+       
+        <footer role="contentInfo">
+            &copy; Eugene Kuzmin 2011
+        </footer>
+       
+    </form>
+</body>
+</html>
