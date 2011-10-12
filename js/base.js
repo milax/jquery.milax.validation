@@ -73,7 +73,9 @@ $.fn.validation = function(options) {
             return true;
         }
         function showErrorMsg(errorMsg, currInput) {
-            errorMsg.show();
+            errorMsg.css({
+                display: 'block'
+            });
         }
         return isValid;
     };    

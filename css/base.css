@@ -90,7 +90,12 @@ legend
     display: none;
 }
 
- 
+input
+{
+    border: 1px solid #ccc;
+    color: #000;
+}
+
 /* @group Main layout */
 
 dl.formFields,
@@ -106,6 +111,27 @@ dl.formFields .error
     color: #f00;
     font-size: 11px;
 }
+dl.formFields dt
+{
+    float: left;
+    width: 100px;    
+}
+dl.formFields dd
+{
+    margin-left: 110px;
+    margin-bottom: 10px;
+    }
+    dl.formFields dd.divider,
+    dl.formFields dd.button
+    {
+        float: none;
+        clear: both;
+        }
+        dl.formFields dd.button
+        {
+            height: auto;
+        }
+
 
 #wrapper
 {
