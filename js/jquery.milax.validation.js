@@ -17,25 +17,30 @@ $.fn.mxValidation = function(options) {
         fieldsToValidateSelector: '.mxValidate',
         btnSubmitSelector: '.btnSubmit',
         fieldHolderSelector: 'dd'
+        isValidFunc: false   
     }, options);
 
     // go through all fields' sets
     this.each(function(){
-        var self = $(this),
-            btnSubmit = self.find(options.btnSubmitSelector);        
+        var self = $(this);
         
         self.find(options.errorMsgClass).hide();
 
         self.find(options.fieldsToValidateSelector).live('keyup', function(event) {
             if (event.keyCode == 13) { // if Enter key has been pressed
-                // fire a submit button click
-                btnSubmit.click();
+                btnSubmit.click(); // fire a submit button click
             }
         });
 
-        btnSubmit.live('click', function(){
-            var fieldsToValidate = self.find(options.fieldsToValidateSelector);            
-            return doFieldsValidation(fieldsToValidate);
+        self.delegate(options.btnSubmitSelector, 'click', currParentBox = self, function(){
+            var fieldsToValidate = self.find(options.fieldsToValidateSelector),            
+                valRes = doFieldsValidation(fieldsToValidate);
+
+            if (valRes && typeof(options.isValidFunc) == 'function') {
+                options.isValidFunc.call(this);
+            }
+
+            return valRes;
         });
     });
 
