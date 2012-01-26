@@ -10,24 +10,25 @@
         <link rel="stylesheet" href="css/ie.css">
     <![endif]-->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="js/base.js"></script>
 
 </head>
 <body>
 
-    <form action="/" method="post">
+    <form action="/ee" method="get">
 
         <section id="wrapper" role="main">
             <h1>Form validation plugin</h1>
             <fieldset>
-                <dl class="formFields">
+                <h2>First example</h2>
+                <dl class="formFields first">
                     <dt>
                         <label>Name: </label>
                     </dt>
                     <dd>
-                        <input type="text" name="yourName" class="validatedField required">
-                        <span class="error required">This field is required</span>
+                        <input type="text" name="yourName" data-mx class="mxValidate mxRequired">
+                        <span class="mxError mxRequired">This field is required</span>
                     </dd>
                     <dd class="divider"></dd>
 
@@ -35,9 +36,47 @@
                         <label>Email: </label>
                     </dt>
                     <dd>
-                        <input type="text" name="yourName" class="validatedField required email">
-                        <span class="error required">This field is required</span>
-                        <span class="error email">Wrong email format</span>
+                        <input type="text" name="yourName" class="mxValidate mxRequired mxEmail">
+                        <span class="mxError mxRequired">This field is required</span>
+                        <span class="mxError mxEmail">Wrong email format</span>
+                    </dd>
+
+                    <dd class="divider"></dd>
+                    <dt>
+                        <label>Field with max width = 3: </label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="yourMax" data-mxvalidate-options='{"max": 10, "min": 3}' class="mxValidate mxRequired mxMax mxMin">
+                        <span class="mxError mxRequired">This field is required</span>
+                        <span class="mxError mxMax">Max length is 10</span>
+                        <span class="mxError mxMin">Min length is 3</span>
+                    </dd>
+
+                    <dd class="button">
+                        <input class="btnSubmit" type="submit" value="Send">
+                    </dd>
+                </dl>
+            </fieldset> 
+
+            <fieldset>
+                <h2>Second example</h2>
+                <dl class="formFields second">
+                    <dt>
+                        <label>Name: </label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="yourName" class="mxValidate mxRequired">
+                        <span class="mxError mxRequired">This field is required</span>
+                    </dd>
+                    <dd class="divider"></dd>
+
+                    <dt>
+                        <label>Email: </label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="yourName" class="mxValidate mxRequired mxEmail">
+                        <span class="mxError mxRequired">This field is required</span>
+                        <span class="mxError mxEmail">Wrong email format</span>
                     </dd>
                     <dd class="button">
                         <input class="btnSubmit" type="submit" value="Send">
@@ -45,10 +84,11 @@
                 </dl>
             </fieldset> 
 
+
         </section>
        
         <footer role="contentInfo">
-            &copy; Eugene Kuzmin 2011
+            &copy; Eugene Kuzmin 2012
         </footer>
        
     </form>

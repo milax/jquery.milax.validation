@@ -1,37 +1,40 @@
 /*
 
-    Project name
+    jQuery validation
     JavaScript functions
 
-    Author: Creuna Danmark A/S / www.creuna.dk
-    Copyright: 2010, Creuna Danmark A/S. All rights resevered
+    Author: Eugene Kuzmin
+    Copyright: 2011-12, Eugene Kuzmin. All rights resevered
 
 -----------------------------------------------------------------------*/
 
 $(function(){
-    $('.formFields').validation();
+    $('.formFields.first,.formFields.second').validation();
 })
 
 $.fn.validation = function(options) {
     var options = jQuery.extend({
-        fieldsToValidateSelector: '.validatedField',
+        errorMsgClass: '.mxError',
+        fieldsToValidateSelector: '.mxValidate',
         btnSubmitSelector: '.btnSubmit',
         fieldHolderSelector: 'dd'
     }, options);
 
-    var fieldsToValidate = this.find(options.fieldsToValidateSelector),
-        btnSubmit = this.find(options.btnSubmitSelector);
 
-    btnSubmit.live('click', function(){
-        return doFieldsValidation();
-    })
+    this.each(function(){
+        var self = $(this),
+            btnSubmit = self.find(options.btnSubmitSelector);        
 
+        btnSubmit.on('click', function(){
+            var fieldsToValidate = self.find(options.fieldsToValidateSelector);            
+            return doFieldsValidation(fieldsToValidate);
+        });
+    });
 
-    var doFieldsValidation = function()
-    {
+    var doFieldsValidation = function(fieldsToValidate) {
         var isValid = true;
         var validationClasses = new Array(
-            'required', 'email', 'date', 'number', 'phone'
+            'mxRequired', 'mxEmail', 'mxDate', 'mxNumber', 'mxPhone', 'mxMax', 'mxMin'
         );
         fieldsToValidate.each(function() {
             var self = $(this);
@@ -46,29 +49,45 @@ $.fn.validation = function(options) {
             }
         });
         function validate(way, currInput) {
-            var currValue = $.trim(currInput.val());
-            var errorMsg = currInput.parents(options.fieldHolderSelector).find('.error.' + way);
+            var currValue = $.trim(currInput.val()),
+                currOpts = currInput.data('mxvalidateOptions'),
+                errorMsg = currInput.parents(options.fieldHolderSelector).find(options.errorMsgClass + '.' + way);
+            
             errorMsg.hide();
 
             switch(way){
-                case 'required':
+                case 'mxRequired':
                     if (!currValue) {
                         showErrorMsg(errorMsg, currInput);
                         return false;
                     }
                     break;
-                case 'email':
+                case 'mxEmail':
                     var pattern = /^([a-zA-Z0-9._%-+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$/ ;
                     if (currValue.match(pattern) === null) {
                         showErrorMsg(errorMsg, currInput);
                         return false;
                     }
                     break;
-                case 'date':
+                case 'mxDate':
                     break;
-                case 'number':
+                case 'mxNumber':
                     break;
-                case 'phone':
+                case 'mxPhone':
+                    break;
+                case 'mxMax':
+                    var maxLength = currOpts.max;
+                    if(currValue.length > maxLength) {
+                        showErrorMsg(errorMsg, currInput);
+                        return false;
+                    }
+                    break;
+                case 'mxMin':
+                    var minLength = currOpts.min;
+                    if(currValue.length < minLength) {
+                        showErrorMsg(errorMsg, currInput);
+                        return false;
+                    }
             }
             return true;
         }
