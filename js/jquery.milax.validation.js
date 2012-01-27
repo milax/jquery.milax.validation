@@ -34,11 +34,10 @@ Copyright: 2011-12, Eugene Kuzmin
                 }
             });
 
-            
+
             self.delegate(options.btnSubmitSelector, 'click', currParentBox = self, function () {
                 var fieldsToValidate = self.find(options.fieldsToValidateSelector),
                     valRes = doFieldsValidation(fieldsToValidate);
-
 
                 if (valRes && typeof (options.isValidFunc) == 'function') {
                     $(this).data("currParentBox", currParentBox);
@@ -95,6 +94,11 @@ Copyright: 2011-12, Eugene Kuzmin
                     case 'mxDate':
                         break;
                     case 'mxNumber':
+                        var pattern = /^\d*$/;
+                        if (currValue.match(pattern) === null) {
+                            showErrorMsg(errorMsg, currInput);
+                            return false;
+                        }
                         break;
                     case 'mxPhone':
                         break;
