@@ -16,7 +16,7 @@ $.fn.mxValidation = function(options) {
         errorFieldClass: '.mxNotValidated',
         fieldsToValidateSelector: '.mxValidate',
         btnSubmitSelector: '.btnSubmit',
-        fieldHolderSelector: 'dd'
+        fieldHolderSelector: 'dd',
         isValidFunc: false   
     }, options);
 
