@@ -28,7 +28,7 @@ $.fn.mxValidation = function(options) {
 
         self.find(options.fieldsToValidateSelector).live('keyup', function(event) {
             if (event.keyCode == 13) { // if Enter key has been pressed
-                btnSubmit.click(); // fire a submit button click
+                $(options.btnSubmitSelector).click(); // fire a submit button click
             }
         });
 
