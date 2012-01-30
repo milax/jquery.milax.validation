@@ -60,6 +60,8 @@ Copyright: 2011-12, Eugene Kuzmin
                 var self = $(this);
 
                 self.parents(options.fieldHolderSelector).find(options.errorMsgClass).hide();
+                self.removeClass(options.errorFieldClass.substr(1));
+                
                 for (var i in validationClasses) {
                     var currClass = validationClasses[i];
                     if (self.hasClass(currClass)) {
@@ -123,6 +125,7 @@ Copyright: 2011-12, Eugene Kuzmin
                 errorMsg.css({
                     display: 'block'
                 });
+                currInput.addClass(options.errorFieldClass.substr(1));
             }
 
             return isValid;
