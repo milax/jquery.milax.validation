@@ -12,8 +12,8 @@ $(function(){
     $('.formFields.first,.formFields.second').mxValidation();
 
     $('.formFields.searchBox').mxValidation({
-        isValidFunc: function() {
-        	alert('you are looking for: ' + currParentBox.find('.searchField').val());
-        }    	
-    });    
+        isValidFunc: function($btnSubmit, $fieldset) {
+            alert('you are looking for: ' + $fieldset.find('.searchField').val());
+        }
+    });
 })

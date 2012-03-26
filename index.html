@@ -14,10 +14,11 @@
 </head>
 <body>
 
-    <form action="/ee" method="get">
+    <section id="wrapper" role="main">
+        <h1>Form validation plugin</h1>
 
-        <section id="wrapper" role="main">
-            <h1>Form validation plugin</h1>
+        <!-- FIRST EXAMPLE -->
+        <form action="http://ya.ru">
             <fieldset>
                 <h2>First example</h2>
                 <dl class="formFields first">
@@ -54,8 +55,11 @@
                         <input class="btnSubmit" type="submit" value="Send">
                     </dd>
                 </dl>
-            </fieldset> 
+            </fieldset>
+        </form>
 
+        <!-- SECOND EXAMPLE -->
+        <form action="http://facebook.com">
             <fieldset>
                 <h2>Second example</h2>
                 <dl class="formFields second">
@@ -81,8 +85,10 @@
                     </dd>
                 </dl>
             </fieldset> 
-
-
+        </form>
+        
+        <!-- THIRD EXAMPLE -->
+        <form action="http://google.com">
             <fieldset>
                 <h2>Third example (search box)</h2>
                 <dl class="formFields searchBox">
@@ -99,13 +105,13 @@
                     </dd>
                 </dl>
             </fieldset> 
+        </form>
 
-        </section>
+    </section>
+   
+    <footer role="contentinfo">
+        &copy; Eugene Kuzmin 2012
+    </footer>
        
-        <footer role="contentInfo">
-            &copy; Eugene Kuzmin 2012
-        </footer>
-       
-    </form>
 </body>
 </html>
