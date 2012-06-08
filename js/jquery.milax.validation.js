@@ -1,8 +1,8 @@
 /*
 
-jQuery Milax Validation v1.1
+jQuery Milax Validation v1.2
 jQuery Plugin
-Latest Update: 27.03.2012
+Latest Update: 08.06.2012
 
 Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
