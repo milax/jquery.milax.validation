@@ -98,6 +98,13 @@ input
 
 /* @group Main layout */
 
+ul.clean
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 dl.formFields,
 dl.formFields dt,
 dl.formFields dd
@@ -114,7 +121,7 @@ dl.formFields .mxError
 dl.formFields dt
 {
     float: left;
-    width: 100px;    
+    width: 100px;
 }
 dl.formFields dd
 {

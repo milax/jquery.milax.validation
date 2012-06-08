@@ -83,11 +83,18 @@
                         One from list is required:
                     </dt>
                     <dd>
-                        <ul>
+                        <ul class="clean mxValidate mxAtLeastOne">
                             <li>
-                                <label for=""><input type="checkbox" name="some"></label>
+                                <label for="firstChk"><input type="checkbox" id="firstChk"> First item</label>
+                            </li>
+                            <li>
+                                <label for="secondChk"><input type="checkbox" id="secondChk"> Second item</label>
+                            </li>
+                            <li>
+                                <label for="thirdChk"><input type="checkbox" id="thirdChk"> Third item</label>
                             </li>
                         </ul>
+                        <span class="mxError mxAtLeastOne">At least one item must be checked</span>
                     </dd>
 
                     <dd class="button">

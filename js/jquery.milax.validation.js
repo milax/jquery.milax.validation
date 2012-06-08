@@ -89,7 +89,8 @@ Copyright: 2011-12, Eugene Kuzmin
                     'mxEmail',
                     'mxNumber',
                     'mxMax',
-                    'mxMin'
+                    'mxMin',
+                    'mxAtLeastOne'
                 );
 
             // go through all fields to be validated
@@ -118,65 +119,62 @@ Copyright: 2011-12, Eugene Kuzmin
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // validate @input field by @way
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        var isFieldValid = function(way, $input) {
-            var val = $.trim($input.val()),
-                opts = $input.data('mxvalidateOptions'),
-                $errMsg = $input.parents(options.fieldHolderSelector).find(options.errMsgClass + '.' + way);
+        var isFieldValid = function(way, $what2Validate) {
+            var val = $.trim($what2Validate.val()),
+                opts = $what2Validate.data('mxvalidateOptions'),
+                $errMsg = $what2Validate.parents(options.fieldHolderSelector).find(options.errMsgClass + '.' + way),
+                isValid = true;
 
             switch (way) {
                 // required field
                 case 'mxRequired':
-                    if (!val) {
-                        showErrorMsg($errMsg, $input);
-                        return false;
-                    }
+                    isValid = !!val;
                     break;
                 // email field
                 case 'mxEmail':
                     var pattern = /^([a-zA-Z0-9._%-+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$/;
-                    if (val.match(pattern) === null) {
-                        showErrorMsg($errMsg, $input);
-                        return false;
-                    }
+                    isValid = !(val.match(pattern) === null);
                     break;
                 // number field
                 case 'mxNumber':
                     var pattern = /^\d*$/;
-                    if (val.match(pattern) === null) {
-                        showErrorMsg($errMsg, $input);
-                        return false;
-                    }
+                    isValid = !(val.match(pattern) === null);
                     break;
                 // field with a defined max value
                 case 'mxMax':
                     var maxLength = opts.max;
-                    if (val.length > maxLength) {
-                        showErrorMsg($errMsg, $input);
-                        return false;
-                    }
+                    isValid = !(val.length > maxLength);
                     break;
                 // field with a defined min value
                 case 'mxMin':
                     var minLength = opts.min;
-                    if (val.length < minLength) {
-                        showErrorMsg($errMsg, $input);
-                        return false;
-                    }
+                    isValid = !(val.length < minLength);
+                    break;
+                // at least one checkbox must be checked from the collection
+                case 'mxAtLeastOne':
+                    var $checkedCheckboxes = $what2Validate.find('input[type="checkbox"]:checked');
+                    isValid = !($checkedCheckboxes.length === 0);
+                    break;
+                default:
+                    isValid = false;
             }
-            return true;
+            if(!isValid) {
+                showErrorMsg($errMsg, $what2Validate);
+            }
+            return isValid;
         }
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        // show @errorMsg for @currInput
+        // show @errorMsg for @what2Validate
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        var showErrorMsg = function($errorMsg, $currInput) {
+        var showErrorMsg = function($errorMsg, $what2Validate) {
             // show an error message
             $errorMsg.css({
                 display: 'block'
             });
 
-            // add an error classname to @currInput
-            $currInput.addClass(options.fieldHasErrorClass.substr(1)); // substr(1) is needed to remove dot at the begin of classname, e.g. ".mxNotValidated" => "mxNotValidated"
+            // add an error classname to @what2Validate
+            $what2Validate.addClass(options.fieldHasErrorClass.substr(1)); // substr(1) is needed to remove dot at the begin of classname, e.g. ".mxNotValidated" => "mxNotValidated"
         }
 
         this.init();
