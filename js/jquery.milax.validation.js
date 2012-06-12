@@ -1,32 +1,32 @@
 /*
 
-jQuery Milax Validation v1.2
+jQuery Milax Validation v1.2.1
 jQuery Plugin
-Latest Update: 08.06.2012
+Latest Update: 12.06.2012
 
 Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
 
 -----------------------------------------------------------------------*/
-;(function ($) {
+; (function ($) {
 
     $.fn.mxValidation = function (settings) {
 
         // options
         var options = jQuery.extend({
-                errMsgClass: '.mxError',
-                fieldHasErrorClass: '.mxNotValidated',
-                fieldsToValidateSelector: '.mxValidate',
-                btnSubmitSelector: '.btnSubmit',
-                fieldHolderSelector: 'dd',
-                isValidFunc: false
-            }, settings),
+            errMsgClass: '.mxError',
+            fieldHasErrorClass: '.mxNotValidated',
+            fieldsToValidateSelector: '.mxValidate',
+            btnSubmitSelector: '.btnSubmit',
+            fieldHolderSelector: 'dd',
+            isValidFunc: false
+        }, settings),
             $fieldsets = this;
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // INIT
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        this.init = function() {
+        this.init = function () {
             operateAllFieldsets();
 
             // handle key ups
@@ -38,7 +38,7 @@ Copyright: 2011-12, Eugene Kuzmin
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // any stuff to work with fieldsets
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        var operateAllFieldsets = function(){
+        var operateAllFieldsets = function () {
             // go through all fields' sets
             $fieldsets.each(function () {
                 var $currFieldset = $(this);
@@ -56,11 +56,11 @@ Copyright: 2011-12, Eugene Kuzmin
                 $fieldset = $(event.delegateTarget);
 
             // if Enter key has been pressed
-            if (event.keyCode == 13) { 
+            if (event.keyCode == 13) {
                 // fire a submit button click
-                $fieldset.find(options.btnSubmitSelector).click(); 
+                $fieldset.find(options.btnSubmitSelector).click();
             }
-        }
+        };
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // handle click on a submit button
@@ -72,12 +72,12 @@ Copyright: 2011-12, Eugene Kuzmin
                 valRes = doFieldsValidation($fieldsToValidate);
 
             // if validation passed than run callback function @options.isValidFunc
-            if (valRes && typeof (options.isValidFunc) === 'function') {
+            if (valRes && typeof(options.isValidFunc) === 'function') {
                 options.isValidFunc($btnSubmit, $fieldset);
             }
 
             return valRes;
-        }
+        };
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // do validation function
@@ -98,12 +98,12 @@ Copyright: 2011-12, Eugene Kuzmin
                 var $input = $(this);
 
                 // hide all related validation messages beforehand
-                $input.parents(options.fieldHolderSelector)
+                $input.closest(options.fieldHolderSelector)
                         .find(options.errMsgClass)
                         .hide();
                 // remove a error classname from current field
                 $input.removeClass(options.fieldHasErrorClass.substr(1));
-                
+
                 for (var i in validationClasses) {
                     var currClass = validationClasses[i];
                     if ($input.hasClass(currClass) && !isFieldValid(currClass, $input)) {
@@ -122,35 +122,35 @@ Copyright: 2011-12, Eugene Kuzmin
         var isFieldValid = function(way, $what2Validate) {
             var val = $.trim($what2Validate.val()),
                 opts = $what2Validate.data('mxvalidateOptions'),
-                $errMsg = $what2Validate.parents(options.fieldHolderSelector).find(options.errMsgClass + '.' + way),
-                isValid = true;
+                $errMsg = $what2Validate.closest(options.fieldHolderSelector).find(options.errMsgClass + '.' + way),
+                isValid = true, pattern;
 
             switch (way) {
-                // required field
+                // required field 
                 case 'mxRequired':
                     isValid = !!val;
                     break;
-                // email field
+                // email field 
                 case 'mxEmail':
-                    var pattern = /^([a-zA-Z0-9._%-+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$/;
+                    pattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
                     isValid = !(val.match(pattern) === null);
                     break;
-                // number field
+                // number field 
                 case 'mxNumber':
-                    var pattern = /^\d*$/;
+                    pattern = /^\d*$/ ;
                     isValid = !(val.match(pattern) === null);
                     break;
-                // field with a defined max value
+                // field with a defined max value 
                 case 'mxMax':
                     var maxLength = opts.max;
                     isValid = !(val.length > maxLength);
                     break;
-                // field with a defined min value
+                // field with a defined min value 
                 case 'mxMin':
                     var minLength = opts.min;
                     isValid = !(val.length < minLength);
                     break;
-                // at least one checkbox must be checked from the collection
+                // at least one checkbox must be checked from the collection 
                 case 'mxAtLeastOne':
                     var $checkedCheckboxes = $what2Validate.find('input[type="checkbox"]:checked');
                     isValid = !($checkedCheckboxes.length === 0);
@@ -158,11 +158,11 @@ Copyright: 2011-12, Eugene Kuzmin
                 default:
                     isValid = false;
             }
-            if(!isValid) {
+            if (!isValid) {
                 showErrorMsg($errMsg, $what2Validate);
             }
             return isValid;
-        }
+        };
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // show @errorMsg for @what2Validate
@@ -175,7 +175,7 @@ Copyright: 2011-12, Eugene Kuzmin
 
             // add an error classname to @what2Validate
             $what2Validate.addClass(options.fieldHasErrorClass.substr(1)); // substr(1) is needed to remove dot at the begin of classname, e.g. ".mxNotValidated" => "mxNotValidated"
-        }
+        };
 
         this.init();
     };
