@@ -1,19 +1,27 @@
 /*
 
-jQuery Milax Validation v1.2.2
+jQuery Milax Validation v1.2.3
 jQuery Plugin
-Latest Update: 13.06.2012
+Latest Update: 03.09.2012
 
 Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
 
 -----------------------------------------------------------------------*/
-; (function ($) {
+;
+(function($) {
 
-    $.fn.mxValidation = function (settings) {
+    $.fn.mxValidation = function(settings) {
 
         // options
-        var options = jQuery.extend({
+        var options = { },
+            $fieldsets = this;
+
+        // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+        // INIT
+        // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+        this.init = function() {
+            options = jQuery.extend({
                 errMsgClass: '.mxError',
                 fieldHasErrorClass: '.mxNotValidated',
                 fieldsToValidateSelector: '.mxValidate',
@@ -21,14 +29,8 @@ Copyright: 2011-12, Eugene Kuzmin
                 fieldHolderSelector: 'dd',
                 locale: getLocale(),
                 isValidFunc: false,
-                isAnyActionsIfValid: true,
+                isAnyActionsIfValid: true
             }, settings),
-            $fieldsets = this;
-
-        // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        // INIT
-        // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        this.init = function () {
             operateAllFieldsets();
 
             // handle key ups
@@ -40,9 +42,9 @@ Copyright: 2011-12, Eugene Kuzmin
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // any stuff to work with fieldsets
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        var operateAllFieldsets = function () {
+        var operateAllFieldsets = function() {
             // go through all fields' sets
-            $fieldsets.each(function () {
+            $fieldsets.each(function() {
                 var $currFieldset = $(this);
 
                 // hide all error messages
@@ -84,7 +86,7 @@ Copyright: 2011-12, Eugene Kuzmin
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         // do validation function
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
-        var doFieldsValidation = function ($fieldsToValidate) {
+        var doFieldsValidation = function($fieldsToValidate) {
             var isValid = true,
                 validationClasses = new Array(
                     'mxRequired',
@@ -97,13 +99,13 @@ Copyright: 2011-12, Eugene Kuzmin
                 );
 
             // go through all fields to be validated
-            $fieldsToValidate.each(function () {
+            $fieldsToValidate.each(function() {
                 var $input = $(this);
 
                 // hide all related validation messages beforehand
                 $input.closest(options.fieldHolderSelector)
-                        .find(options.errMsgClass)
-                        .hide();
+                    .find(options.errMsgClass)
+                    .hide();
                 // remove a error classname from current field
                 $input.removeClass(options.fieldHasErrorClass.substr(1));
 
@@ -140,7 +142,7 @@ Copyright: 2011-12, Eugene Kuzmin
                     break;
                 // number field 
                 case 'mxNumber':
-                    pattern = /^\d*$/ ;
+                    pattern = /^\d*$/;
                     isValid = !(val.match(pattern) === null);
                     break;
                 // field with a defined max value 
@@ -161,21 +163,25 @@ Copyright: 2011-12, Eugene Kuzmin
                 // field with postal code
                 case 'mxPostalCode':
                     var postalCodeRegexps = {
-                        'dk': /^\d{4}$/ ,
-                        'da': /^\d{4}$/ ,
-                        'no': /^\d{4}$/ ,
-                        'se': /^\d{5}$/ ,
-                        'sv': /^\d{5}$/ ,
-                        'pl': /^\d{5}$/ ,
-                        'fi': /^\d{5}$/ ,
-                        'en-GB': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/ ,
-                        'en': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/ ,
-                        'uk': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/ ,
-                        'com': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/
-                    },
-                    localPostalCodeRegex = postalCodeRegexps[opts.locale];
+                            'dk': /^\d{4}$/,
+                            'da': /^\d{4}$/,
+                            'no': /^\d{4}$/,
+                            'se': /^\d{5}$/,
+                            'sv': /^\d{5}$/,
+                            'pl': /^\d{5}$/,
+                            'fi': /^\d{5}$/,
+                            'en-GB': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/,
+                            'en': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/,
+                            'uk': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/,
+                            'com': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/
+                        },
+                        postalCode;
 
-                    console.log(localPostalCodeRegex);
+                    pattern = postalCodeRegexps[options.locale] || postalCodeRegexps['dk'];
+                    postalCode = val.replace(/\s/g, '');
+                    postalCode = postalCode.replace(/\-/g, '');
+                    isValid = !(postalCode.match(pattern) === null);
+                    break;
                 default:
                     isValid = false;
             }
@@ -202,8 +208,9 @@ Copyright: 2011-12, Eugene Kuzmin
         // get current locale by hostname
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
         var getLocale = function() {
-            var hostname = window.location.hostname;
-            lang = hostname.match( /\.([a-z,A-Z]{2,6})$/);
+            var hostname = window.location.hostname,
+                lang = hostname.match(/\.([a-z,A-Z]{2,6})$/);
+
             lang = lang[1];
 
             return lang;
