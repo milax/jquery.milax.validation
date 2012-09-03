@@ -1,8 +1,8 @@
 /*
 
-jQuery Milax Validation v1.2.1
+jQuery Milax Validation v1.2.2
 jQuery Plugin
-Latest Update: 12.06.2012
+Latest Update: 13.06.2012
 
 Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
@@ -14,13 +14,15 @@ Copyright: 2011-12, Eugene Kuzmin
 
         // options
         var options = jQuery.extend({
-            errMsgClass: '.mxError',
-            fieldHasErrorClass: '.mxNotValidated',
-            fieldsToValidateSelector: '.mxValidate',
-            btnSubmitSelector: '.btnSubmit',
-            fieldHolderSelector: 'dd',
-            isValidFunc: false
-        }, settings),
+                errMsgClass: '.mxError',
+                fieldHasErrorClass: '.mxNotValidated',
+                fieldsToValidateSelector: '.mxValidate',
+                btnSubmitSelector: '.btnSubmit',
+                fieldHolderSelector: 'dd',
+                locale: getLocale(),
+                isValidFunc: false,
+                isAnyActionsIfValid: true,
+            }, settings),
             $fieldsets = this;
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
@@ -76,7 +78,7 @@ Copyright: 2011-12, Eugene Kuzmin
                 options.isValidFunc($btnSubmit, $fieldset);
             }
 
-            return valRes;
+            return options.isAnyActionsIfValid ? valRes : false;
         };
 
         // // // // // // // // // // // // // // // // // // // // // // // // // // // 
@@ -90,7 +92,8 @@ Copyright: 2011-12, Eugene Kuzmin
                     'mxNumber',
                     'mxMax',
                     'mxMin',
-                    'mxAtLeastOne'
+                    'mxAtLeastOne',
+                    'mxPostalCode'
                 );
 
             // go through all fields to be validated
@@ -155,6 +158,24 @@ Copyright: 2011-12, Eugene Kuzmin
                     var $checkedCheckboxes = $what2Validate.find('input[type="checkbox"]:checked');
                     isValid = !($checkedCheckboxes.length === 0);
                     break;
+                // field with postal code
+                case 'mxPostalCode':
+                    var postalCodeRegexps = {
+                        'dk': /^\d{4}$/ ,
+                        'da': /^\d{4}$/ ,
+                        'no': /^\d{4}$/ ,
+                        'se': /^\d{5}$/ ,
+                        'sv': /^\d{5}$/ ,
+                        'pl': /^\d{5}$/ ,
+                        'fi': /^\d{5}$/ ,
+                        'en-GB': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/ ,
+                        'en': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/ ,
+                        'uk': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/ ,
+                        'com': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/
+                    },
+                    localPostalCodeRegex = postalCodeRegexps[opts.locale];
+
+                    console.log(localPostalCodeRegex);
                 default:
                     isValid = false;
             }
@@ -175,6 +196,17 @@ Copyright: 2011-12, Eugene Kuzmin
 
             // add an error classname to @what2Validate
             $what2Validate.addClass(options.fieldHasErrorClass.substr(1)); // substr(1) is needed to remove dot at the begin of classname, e.g. ".mxNotValidated" => "mxNotValidated"
+        };
+
+        // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+        // get current locale by hostname
+        // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+        var getLocale = function() {
+            var hostname = window.location.hostname;
+            lang = hostname.match( /\.([a-z,A-Z]{2,6})$/);
+            lang = lang[1];
+
+            return lang;
         };
 
         this.init();
