@@ -1,8 +1,8 @@
 /*
 
-jQuery Milax Validation v1.2.3
+jQuery Milax Validation v1.2.4
 jQuery Plugin
-Latest Update: 03.09.2012
+Latest Update: 10.09.2012
 
 Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
@@ -137,7 +137,7 @@ Copyright: 2011-12, Eugene Kuzmin
                     break;
                 // email field 
                 case 'mxEmail':
-                    pattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+                    pattern = /^[ÆØÅæøåA-Za-z0-9._%+-]+@(?:[ÆØÅæøåA-Za-z0-9-]+\.)+[A-Za-z]{2,6}$/;
                     isValid = !(val.match(pattern) === null);
                     break;
                 // number field 
