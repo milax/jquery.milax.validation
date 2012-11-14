@@ -8,8 +8,7 @@ Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
 
 -----------------------------------------------------------------------*/
-;
-(function($) {
+;(function($) {
 
     $.fn.mxValidation = function(settings) {
 
@@ -131,31 +130,31 @@ Copyright: 2011-12, Eugene Kuzmin
                 isValid = true, pattern;
 
             switch (way) {
-                // required field 
+                // required field
                 case 'mxRequired':
                     isValid = !!val;
                     break;
-                // email field 
+                // email field
                 case 'mxEmail':
-                    pattern = /^[ÆØÅæøåA-Za-z0-9._%+-]+@(?:[ÆØÅæøåA-Za-z0-9-]+\.)+[A-Za-z]{2,6}$/;
+                    pattern = ^[ÆØÅæøåa-zA-Z0-9_-]+(?:\.[ÆØÅæøåa-zA-Z0-9_-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/;
                     isValid = !(val.match(pattern) === null);
                     break;
-                // number field 
+                // number field
                 case 'mxNumber':
                     pattern = /^\d*$/;
                     isValid = !(val.match(pattern) === null);
                     break;
-                // field with a defined max value 
+                // field with a defined max value
                 case 'mxMax':
                     var maxLength = opts.max;
                     isValid = !(val.length > maxLength);
                     break;
-                // field with a defined min value 
+                // field with a defined min value
                 case 'mxMin':
                     var minLength = opts.min;
                     isValid = !(val.length < minLength);
                     break;
-                // at least one checkbox must be checked from the collection 
+                // at least one checkbox must be checked from the collection
                 case 'mxAtLeastOne':
                     var $checkedCheckboxes = $what2Validate.find('input[type="checkbox"]:checked');
                     isValid = !($checkedCheckboxes.length === 0);
