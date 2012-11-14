@@ -1,6 +1,6 @@
 /*
 
-jQuery Milax Validation v1.2.5
+jQuery Milax Validation v1.3
 jQuery Plugin
 Latest Update: 14.11.2012
 
@@ -13,68 +13,61 @@ Copyright: 2011-12, Eugene Kuzmin
 
     $.fn.mxValidation = function(settings) {
 
-        // options
+        // vars
         var options = { },
             $fieldsets = this;
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // INIT
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        this.init = function() {
-            options = $.extend({
-                errMsgClass: '.mxError',
-                fieldHasErrorClass: '.mxNotValidated',
-                fieldsToValidateSelector: '.mxValidate',
-                btnSubmitSelector: '.btnSubmit',
-                fieldHolderSelector: 'dd',
-                locale: getLocale(),
-                isValidFunc: false,
-                isAnyActionsIfValid: true
-            }, settings),
-            operateAllFieldsets();
+        // ==========================================================================
+        // Init
+        // ==========================================================================
+        var init = function() {
 
-            // handle key ups
-            $fieldsets.on('keyup', options.fieldsToValidateSelector, fieldKeyUpHandler);
-            // handle click on submit buttons
-            $fieldsets.on('click', options.btnSubmitSelector, submitBtnHandler);
+            hideAllErrorMsgs();
+
+            // hide all error messages function
+            function hideAllErrorMsgs() {
+                // go through all fields' sets
+                $fieldsets.each(function() {
+                    var $currFieldset = $(this);
+                    // hide all error messages
+                    $currFieldset.find(options.errMsgClass).hide();
+                });
+            }
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // any stuff to work with fieldsets
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        var operateAllFieldsets = function() {
-            // go through all fields' sets
-            $fieldsets.each(function() {
-                var $currFieldset = $(this);
-
-                // hide all error messages
-                $currFieldset.find(options.errMsgClass).hide();
-            });
+        var fieldBlurHandler = function(e) {
+            var $input = $(e.target),
+                errorClass = options.fieldHasErrorClass;
+            errorClass = errorClass.substr(1);
+            if($input.hasClass(errorClass)) {
+                doFieldsValidation($input);
+            }
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // handle key up in a field
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // ==========================================================================
+        // Handle key up in a field
+        // ==========================================================================
         var fieldKeyUpHandler = function(event) {
-            var $fieldset = $(event.delegateTarget);
+            var $fieldset = $(event.delegateTarget),
+                ENTER_KEY_CODE = 13;
 
-            // if Enter key has been pressed
-            if (event.keyCode == 13) {
+            // if ENTER key has been pressed
+            if (event.keyCode === ENTER_KEY_CODE) {
                 // fire a submit button click
                 $fieldset.find(options.btnSubmitSelector).click();
             }
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // handle click on a submit button
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // ==========================================================================
+        // Handle click on a submit button
+        // ==========================================================================
         var submitBtnHandler = function(event) {
             var $btnSubmit = $(this),
                 $fieldset = $(event.delegateTarget),
-                $fieldsToValidate = $fieldset.find(options.fieldsToValidateSelector),
-                valRes = doFieldsValidation($fieldsToValidate);
+                $fields2Validate = $fieldset.find(options.fields2ValidateSelector),
+                valRes = doFieldsValidation($fields2Validate);
 
-            // if validation passed than run callback function @options.isValidFunc
+            // if validation passed Ok then run callback function @options.isValidFunc
             if (valRes && typeof(options.isValidFunc) === 'function') {
                 options.isValidFunc($btnSubmit, $fieldset);
             }
@@ -82,9 +75,9 @@ Copyright: 2011-12, Eugene Kuzmin
             return options.isAnyActionsIfValid ? valRes : false;
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // do validation function
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // ==========================================================================
+        // Validation function
+        // ==========================================================================
         var doFieldsValidation = function($fieldsToValidate) {
             var isValid = true,
                 validationClasses = new Array(
@@ -99,30 +92,33 @@ Copyright: 2011-12, Eugene Kuzmin
 
             // go through all fields to be validated
             $fieldsToValidate.each(function() {
-                var $input = $(this);
+                validateThisField($(this));
+            });
+
+            return isValid;
+
+            // validate @input
+            function validateThisField($input) {
+                var i, currClass;
 
                 // hide all related validation messages beforehand
-                $input.closest(options.fieldHolderSelector)
-                    .find(options.errMsgClass)
-                    .hide();
-                // remove a error classname from current field
+                $input.closest(options.fieldHolderSelector).find(options.errMsgClass).hide();
+                // remove an error classname from the current field
                 $input.removeClass(options.fieldHasErrorClass.substr(1));
 
-                for (var i in validationClasses) {
-                    var currClass = validationClasses[i];
+                for (i in validationClasses) {
+                    currClass = validationClasses[i];
                     if ($input.hasClass(currClass) && !isFieldValid(currClass, $input)) {
                         isValid = false;
                         return true; // go to the next field to validate
                     }
                 }
-            });
-
-            return isValid;
+            }
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // validate @input field by @way
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // ==========================================================================
+        // Validate @input field by @way
+        // ==========================================================================
         var isFieldValid = function(way, $what2Validate) {
             var val = $.trim($what2Validate.val()),
                 opts = $what2Validate.data('mxvalidateOptions'),
@@ -182,7 +178,7 @@ Copyright: 2011-12, Eugene Kuzmin
 
             // return proper pattern value @p in depending on @way
             function getPattern() {
-                var p;
+                var p; // pattern
                 switch (way) {
                     // email field
                     case 'mxEmail':
@@ -220,31 +216,63 @@ Copyright: 2011-12, Eugene Kuzmin
             }
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // show @errorMsg for @what2Validate
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // ==========================================================================
+        // Show @errorMsg for @what2Validate
+        // ==========================================================================
         var showErrorMsg = function($errorMsg, $what2Validate) {
             // show an error message
             $errorMsg.css({
-                display: 'block'
+                display: 'block' // force 'block', could be changed to .show() method which sets display property in depending on element and its default value
             });
 
             // add an error classname to @what2Validate
-            $what2Validate.addClass(options.fieldHasErrorClass.substr(1)); // substr(1) is needed to remove dot at the begin of classname, e.g. ".mxNotValidated" => "mxNotValidated"
+            $what2Validate.addClass(options.fieldHasErrorClass.substr(1)); // substr(1) is needed to remove dot at the begin of a classname, e.g. ".mxNotValidated" => "mxNotValidated"
         };
 
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // get current locale by hostname
-        // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        // ==========================================================================
+        // Get current locale by hostname
+        // ==========================================================================
         var getLocale = function() {
             var hostname = window.location.hostname,
                 lang = hostname.match(/\.([a-z,A-Z]{2,6})$/);
 
-            lang = lang && lang[1] ? lang[1] : 'en';
+            lang = lang && lang[1] ? lang[1] : 'en'; // locale 'en' is default
 
             return lang;
         };
 
-        this.init();
+        // ==========================================================================
+        // Bindings
+        // ==========================================================================
+        var bindings = function() {
+            // form fields key up handler
+            $fieldsets.on('keyup', options.fieldsToValidateSelector, fieldKeyUpHandler);
+            // form fields blur (focusout is more suitable) event handler
+            $fieldsets.on('focusout', options.fieldsToValidateSelector, fieldBlurHandler);
+            // submit button click handler
+            $fieldsets.on('click', options.btnSubmitSelector, submitBtnHandler);
+        };
+
+        // ==========================================================================
+        // Entry point (self run)
+        // ==========================================================================
+        (function(){
+
+            options = $.extend({
+                errMsgClass: '.mxError',
+                fieldHasErrorClass: '.mxNotValidated',
+                fields2ValidateSelector: '.mxValidate',
+                btnSubmitSelector: '.btnSubmit',
+                fieldHolderSelector: 'dd',
+                locale: getLocale(),
+                isValidFunc: false,
+                isAnyActionsIfValid: true
+            }, settings),
+
+            init();
+            bindings();
+
+        })();
+
     };
 })(jQuery);
