@@ -1,8 +1,8 @@
 /*
 
-jQuery Milax Validation v1.3
+jQuery Milax Validation v1.3.2
 jQuery Plugin
-Latest Update: 14.11.2012
+Latest Update: 12.12.2012
 
 Author: Eugene Kuzmin
 Copyright: 2011-12, Eugene Kuzmin
@@ -87,7 +87,8 @@ Copyright: 2011-12, Eugene Kuzmin
                     'mxMax',
                     'mxMin',
                     'mxAtLeastOne',
-                    'mxPostalCode'
+                    'mxPostalCode',
+                    'mxPhone'
                 );
 
             // go through all fields to be validated
@@ -137,6 +138,7 @@ Copyright: 2011-12, Eugene Kuzmin
                 // number field
                 case 'mxEmail':
                 case 'mxNumber':
+                case 'mxPhone':
                     isValid = val.match(pattern) !== null;
                     break;
 
@@ -206,6 +208,11 @@ Copyright: 2011-12, Eugene Kuzmin
                                 'com': /(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})/
                             };
                         p = postalCodeRegexps[options.locale] || postalCodeRegexps['dk'];
+                        break;
+
+                    // phone
+                    case 'mxPhone':
+                        p = /[0-9\ \+]{8,}/;
                         break;
 
                     default:
